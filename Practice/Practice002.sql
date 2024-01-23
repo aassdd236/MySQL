@@ -74,19 +74,19 @@ from employees
 order by hire_date asc;
 
 -- 11
-/*case when date_format(min(hire_date), '%a') = 'mon' then '월요일'
-            when date_format(min(hire_date), '%a') = 'wed' then '화요일'
-            when date_format(min(hire_date), '%a') = 'thu' then '수요일'
-            when date_format(min(hire_date), '%a') = 'sat' then '목요일'
+/* case when date_format(min(hire_date), '%a') = 'mon' then '월요일'
+            when date_format(min(hire_date), '%a') = 'thu' then '화요일'
+            when date_format(min(hire_date), '%a') = 'wed' then '수요일'
+            when date_format(min(hire_date), '%a') = 'thr' then '목요일'
             when date_format(min(hire_date), '%a') = 'fri' then '금요일'
             when date_format(min(hire_date), '%a') = 'sat' then '토요일'
             else '일요일'
-            end  '요일'*/
+            end*/
 select concat(date_format(min(hire_date), '%Y년 %m월 %d일('),
     case when date_format(min(hire_date), '%a') = 'mon' then '월요일'
-            when date_format(min(hire_date), '%a') = 'wed' then '화요일'
-            when date_format(min(hire_date), '%a') = 'thu' then '수요일'
-            when date_format(min(hire_date), '%a') = 'sat' then '목요일'
+            when date_format(min(hire_date), '%a') = 'thu' then '화요일'
+            when date_format(min(hire_date), '%a') = 'wed' then '수요일'
+            when date_format(min(hire_date), '%a') = 'thr' then '목요일'
             when date_format(min(hire_date), '%a') = 'fri' then '금요일'
             when date_format(min(hire_date), '%a') = 'sat' then '토요일'
             else '일요일'
