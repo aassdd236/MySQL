@@ -74,16 +74,23 @@ from employees
 order by hire_date asc;
 
 -- 11
- /*CASE weekday
-        WHEN 'Sunday' THEN SET korean_weekday = '일요일';
-        WHEN 'Monday' THEN SET korean_weekday = '월요일';
-        WHEN 'Tuesday' THEN SET korean_weekday = '화요일';
-        WHEN 'Wednesday' THEN SET korean_weekday = '수요일';
-        WHEN 'Thursday' THEN SET korean_weekday = '목요일';
-        WHEN 'Friday' THEN SET korean_weekday = '금요일';
-        WHEN 'Saturday' THEN SET korean_weekday = '토요일';
-    END CASE; */
-select date_format(min(hire_date), '%Y년 %m월 %e일(%a)') 입사일
+/*case when date_format(min(hire_date), '%a') = 'mon' then '월요일'
+            when date_format(min(hire_date), '%a') = 'wed' then '화요일'
+            when date_format(min(hire_date), '%a') = 'thu' then '수요일'
+            when date_format(min(hire_date), '%a') = 'sat' then '목요일'
+            when date_format(min(hire_date), '%a') = 'fri' then '금요일'
+            when date_format(min(hire_date), '%a') = 'sat' then '토요일'
+            else '일요일'
+            end  '요일'*/
+select concat(date_format(min(hire_date), '%Y년 %m월 %d일('),
+    case when date_format(min(hire_date), '%a') = 'mon' then '월요일'
+            when date_format(min(hire_date), '%a') = 'wed' then '화요일'
+            when date_format(min(hire_date), '%a') = 'thu' then '수요일'
+            when date_format(min(hire_date), '%a') = 'sat' then '목요일'
+            when date_format(min(hire_date), '%a') = 'fri' then '금요일'
+            when date_format(min(hire_date), '%a') = 'sat' then '토요일'
+            else '일요일'
+            end , ')') 입사일
 from employees;
 
 
