@@ -1,5 +1,98 @@
+-- 1
+select count(employee_id) haveMngCnt
+from employees
+where manager_id is not null;
+
 -- 2
-select job_title 업무이름,
-		max_salary 최고월급
-from jobs
-order by max_salary desc;
+select max(salary) 최고임금,
+	   min(salary) 최저임금,
+       max(salary)-min(salary) '최고임금-최저임금'
+from employees;
+
+-- 3
+select date_format(max(hire_date), '%Y년 %m월 %e일') 날짜
+from employees
+where hire_date is not null;
+
+-- 4
+select avg(salary) 평균임금,
+	   max(salary) 최고임금,
+       min(salary) 최저임금,
+       department_id 부서아이디
+from employees
+group by department_id
+order by department_id desc;
+
+-- 5 ㄴㄴ
+select avg(salary) 평균임금,
+	   max(salary) 최고임금,
+	   min(salary) 최저임금,
+       job_id 업무
+from employees
+group by job_id
+order by min(salary) desc, round(avg(salary), 0) asc;
+
+-- 6
+select date_format(min(hire_date), '%Y-%m-%d %W')
+from employees;
+
+-- 7
+select department_id 부서,
+	   avg(salary) 평균임금,
+       min(salary) 최저임금,
+       avg(salary)-min(salary) '(평균임금-최저임금)'
+from employees
+group by department_id
+having avg(salary)-min(salary)<2000
+order by avg(salary)-min(salary) desc;
+
+-- 8
+select job_id 업무,
+       max(salary)-min(salary) 차이
+from employees
+group by job_id
+order by 차이 desc;
+
+-- 9
+select manager_id 관리자,
+	   round(avg(salary), 0) 평균급여,
+       min(salary) 최소급여,
+       max(salary) 최대급여
+from employees
+group by manager_id
+having avg(salary)>=5000
+order by avg(salary) desc;
+
+-- 10
+select hire_date,
+	   case when hire_date <='02/12/31' then '창립멤버'
+			when hire_date <='03/12/31' then '03년입사'
+            when hire_date <='04/12/31' then '04년입사'
+			else '상장이후입사'
+		end 입사일
+from employees 
+order by hire_date asc;
+
+-- 11
+/* case when date_format(min(hire_date), '%a') = 'mon' then '월요일'
+            when date_format(min(hire_date), '%a') = 'thu' then '화요일'
+            when date_format(min(hire_date), '%a') = 'wed' then '수요일'
+            when date_format(min(hire_date), '%a') = 'thr' then '목요일'
+            when date_format(min(hire_date), '%a') = 'fri' then '금요일'
+            when date_format(min(hire_date), '%a') = 'sat' then '토요일'
+            else '일요일'
+            end*/
+select concat(date_format(min(hire_date), '%Y년 %m월 %d일('),
+    case when date_format(min(hire_date), '%a') = 'mon' then '월요일'
+            when date_format(min(hire_date), '%a') = 'thu' then '화요일'
+            when date_format(min(hire_date), '%a') = 'wed' then '수요일'
+            when date_format(min(hire_date), '%a') = 'thr' then '목요일'
+            when date_format(min(hire_date), '%a') = 'fri' then '금요일'
+            when date_format(min(hire_date), '%a') = 'sat' then '토요일'
+            else '일요일'
+            end , ')') 입사일
+from employees;
+
+
+
+
