@@ -27,7 +27,8 @@ select employee_id 사번,
 	   first_name 이름,
        salary 월급
 from employees
-where salary <any (select salary from employees where job_id='ST_MAN');
+where salary <any (select salary from employees where job_id='ST_MAN')
+order by salary desc;
 
 -- 5
 select employee_id 직원번호,
@@ -37,8 +38,21 @@ select employee_id 직원번호,
 from employees
 where (department_id, salary) in (select department_id, max(salary)
 								  from employees
-                                  group by department_id);
-					
+                                  group by department_id)
+order by salary desc;
+
+select e.employee_id 직원번호,
+	   e.first_name 이름,
+	   e.salary 월급,
+       e.department_id 부서번호
+from employees e
+join (select max(salary) salary
+	  from employees
+	  group by department_id) s
+on e.salary = s.salary 
+order by e.salary desc;
+            
+            
 -- 6
 select j.job_title 업무명,
 	   sum(salary) '월급 총합'
