@@ -72,18 +72,24 @@ from employees e, departments d
 where e.department_id=d.department_id and
      e.hire_date = (select max(hire_date) from employees);
 
--- 7 sssssssssss
+-- 7
 select e.employee_id 사번,
        e.last_name 성,
        e.first_name 이름,
        j.job_title 업무명,
        e.salary 월급,
-       avg(e.salary) 부서평균월급,
+       s.sal 부서평균월급,
        e.department_id 부서아이디
 from employees e
 join jobs j on e.job_id=j.job_id
-group by e.department_id, j.job_id
-;
+join (select e.department_id, avg(salary) sal from employees e, departments d
+		where e.department_id=d.department_id group by department_id) s
+        on e.department_id=s.department_id
+group by  e.employee_id, e.last_name, e.first_name, j.job_title, e.salary, e.department_id
+having s.sal >= (select max(sal) from employees e, (select avg(salary) sal, department_id
+											from employees
+											group by department_id) s
+						where e.department_id = s.department_id);
 
 -- 8
 select d.department_name 부서명,
@@ -113,10 +119,14 @@ order by avgSalary desc
 limit 0, 1;
 
 
--- 10 ssssssssss
+-- 10
 select j.job_title,
        avg(e.salary)
 from employees e
 join jobs j on e.job_id=j.job_id
-where e.salary = (select max(salary) from employees)
-group by j.job_id;
+join (select max(sal) salary
+          from (select job_id, avg(salary) sal
+					  from employees 
+		   group by job_id) s ) s
+	on e.salary  = s.salary
+group by job_title;
