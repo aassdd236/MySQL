@@ -113,9 +113,10 @@ order by avgSalary desc
 limit 0, 1;
 
 
--- 10
+-- 10 ssssssssss
 select j.job_title,
-       e.salary
+       avg(e.salary)
 from employees e
 join jobs j on e.job_id=j.job_id
-where e.salary= (select max(salary) from employees);
+where e.salary = (select max(salary) from employees)
+group by j.job_id;
